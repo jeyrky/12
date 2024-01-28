@@ -35,14 +35,16 @@ local function UnequipTools()
 end
 
 local function ExecuteAfterMove(destination)
-    wait(1)  -- Chờ 1 giây trước khi thực hiện các hành động tiếp theo
+    wait(1)  -- Wait for 1 second after reaching the destination
 
-    RandomAction()
-    wait(1)
-    UnequipTools()
-    wait(1)
-    DropMultipleItemsFromBackpack(200)
-    wait(2)
+    if destination == destinations[4] then
+        RandomAction()
+        wait(1)
+        UnequipTools()
+        wait(1)
+        DropMultipleItemsFromBackpack(200)
+        wait(2)
+    end
 end
 
 SetTeam("Pirates")
