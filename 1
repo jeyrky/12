@@ -55,10 +55,7 @@ local destinations = {
     Vector3.new(-362.170715, 74.637352, 388.4216),
 }
 
-for i, destination in ipairs(destinations) do
+for _, destination in ipairs(destinations) do
     MoveTo(destination)
-
-    if i == #destinations then
-        ExecuteAfterMove(destination)
-    end
+    ExecuteAfterMove(destination)
 end
