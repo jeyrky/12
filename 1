@@ -1,0 +1,79 @@
+local plr = game.Players.LocalPlayer
+local rs = game:GetService("ReplicatedStorage")
+local ts = game:GetService("TweenService")
+
+local function SetTeam(teamName)
+    rs.Remotes.CommF_:InvokeServer("SetTeam", teamName)
+end
+
+local function Run(destination, speed)
+    local humanoid = plr.Character:WaitForChild("Humanoid")
+    local rootPart = humanoid.Parent:WaitForChild("HumanoidRootPart")
+
+    local startPos = rootPart.Position
+    local endPos = destination.Position
+
+    local distance = (endPos - startPos).Magnitude
+    local duration = distance / speed
+
+    humanoid.WalkSpeed = speed
+
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
+    local tweenGoal = {}
+    tweenGoal.Position = endPos
+
+    local tween = ts:Create(rootPart, tweenInfo, tweenGoal)
+    tween:Play()
+
+    wait(duration)
+
+    humanoid.WalkSpeed = 16 -- Đặt lại tốc độ mặc định (không cần chậm)
+end
+
+local function RandomAction()
+    rs.Remotes.CommF_:InvokeServer("Cousin", "Buy")
+end
+
+local function DropMultipleItemsFromBackpack(quantity)
+    for _, tool in ipairs(plr.Backpack:GetChildren()) do
+        if tool:IsA("Tool") then
+            tool.Parent = plr.Character
+            local toolInCharacter = plr.Character:FindFirstChild(tool.Name)
+            if toolInCharacter then
+                toolInCharacter.Parent = game.Workspace
+            end
+        end
+    end
+end
+
+local function UnequipTools()
+    for _, tool in ipairs(plr.Character:GetChildren()) do
+        if tool:IsA("Tool") then
+            tool.Parent = plr.Backpack
+        end
+    end
+end
+
+SetTeam("Pirates")
+wait(1)
+
+local destinations = {
+    CFrame.new(-439.756195, 74.7229309, 334.207611, -0.997412086, -0.00302691618, -0.0718342587, -4.37081326e-07, 0.999113679, -0.0420938432, 0.0718979985, -0.0419848897, -0.99652797),
+    CFrame.new(-430.462463, 74.6348419, 383.055756, -0.998814881, 0.00247582933, 0.0486081503, -1.15964212e-07, 0.998705268, -0.0508704484, -0.0486711673, -0.0508101583, -0.997521579),
+    CFrame.new(-426.655273, 74.6416321, 387.312103, -0.505749345, -0.0332514271, -0.862039387, -3.25380825e-08, 0.999256849, -0.0385442823, 0.862680495, -0.0194936953, -0.505373538),
+    CFrame.new(-362.170715, 74.637352, 388.4216, -0.0902634189, -0.0389530361, -0.995155871, 5.64614311e-09, 0.999234796, -0.0391126946, 0.995917976, -0.00353043084, -0.0901943594),
+}
+
+local speeds = {16, 16, 16, 16} -- Tốc độ mặc định
+
+for i, destination in ipairs(destinations) do
+    Run(destination, speeds[i])
+    if i == 4 then
+        RandomAction()
+        wait(1)
+        UnequipTools()
+        wait(1)
+        DropMultipleItemsFromBackpack(200)
+        wait(2)
+    end
+end
