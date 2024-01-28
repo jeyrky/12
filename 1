@@ -36,7 +36,6 @@ local function UnequipTools()
 end
 
 local function ExecuteAfterMove(destination)
-    MoveTo(destination)
     wait(1)  -- Chờ 1 giây trước khi thực hiện các hành động tiếp theo
 
     RandomAction()
@@ -57,14 +56,10 @@ local destinations = {
     Vector3.new(-362.170715, 74.637352, 388.4216),
 }
 
-local reachedDestination4 = false
+for i, destination in ipairs(destinations) do
+    MoveTo(destination)
 
-for _, destination in ipairs(destinations) do
-    if reachedDestination4 then
+    if i == #destinations then
         ExecuteAfterMove(destination)
-    else
-        MoveTo(destination)
-        wait(1)  -- Chờ 1 giây trước khi kiểm tra điều kiện
-        reachedDestination4 = true
     end
 end
