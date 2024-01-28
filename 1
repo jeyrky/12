@@ -8,7 +8,6 @@ end
 local function MoveTo(destination)
     local humanoid = plr.Character:WaitForChild("Humanoid")
     humanoid:MoveTo(destination)
-    humanoid.MoveToFinished:Wait()
 end
 
 local function RandomAction()
