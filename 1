@@ -35,8 +35,12 @@ local function UnequipTools()
     end
 end
 
-local function ExecuteAfterMove(destination)
-    wait(1)  -- Chờ 1 giây trước khi thực hiện các hành động tiếp theo
+local function ExecuteAfterMove(destination, isLastDestination)
+    if not isLastDestination then
+        wait(1)  -- Chờ 1 giây trước khi thực hiện các hành động tiếp theo
+    else
+        wait(5)  -- Chờ 5 giây sau khi đến vị trí cuối cùng
+    end
 
     RandomAction()
     wait(1)
@@ -58,8 +62,5 @@ local destinations = {
 
 for i, destination in ipairs(destinations) do
     MoveTo(destination)
-
-    if i == #destinations then
-        ExecuteAfterMove(destination)
-    end
+    ExecuteAfterMove(destination, i == #destinations)
 end
